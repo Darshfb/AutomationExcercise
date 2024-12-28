@@ -1,16 +1,16 @@
-name: Run Selenium Tests and Deploy to GitHub Pages
+name: Run Selenium Tests with Allure Report and Deploy to GitHub Pages
 
 on:
   push:
     branches:
-      - master  # Trigger the workflow when changes are pushed to 'master' branch
+      - master  # Trigger on push to 'master' branch
   pull_request:
     branches:
-      - master  # Trigger the workflow when PRs are opened/updated for the 'master' branch
+      - master  # Trigger on PR to 'master' branch
 
 jobs:
   build:
-    runs-on: macos-latest  # Use the macOS environment for the CI build
+    runs-on: macos-latest  # Use macOS runner (or change as needed)
 
     steps:
     - name: Checkout repository
@@ -19,25 +19,29 @@ jobs:
     - name: Set up JDK 11
       uses: actions/setup-java@v3
       with:
-        java-version: '11'  # Specify the Java version you want to use
+        java-version: '11'
         distribution: 'adoptopenjdk'
 
     - name: Install dependencies
       run: |
-        ./mvnw install  # Adjust this if you're using another build tool (e.g., Maven, Gradle)
+        ./mvnw install  # Run your Maven install
 
     - name: Run Selenium Tests
       run: |
-        ./mvnw test  # Run your Selenium tests (adjust the command if needed)
+        ./mvnw test  # Run your Selenium tests
 
-    - name: Generate Report
+    - name: Generate Allure Report
       run: |
-        mkdir -p docs  # Create a directory for storing the HTML report
-        mv target/extent-report.html docs/  # Move the generated report into the 'docs' folder
+        mvn allure:report  # Generate the Allure report
+
+    - name: Move Report to docs Folder
+      run: |
+        mkdir -p docs  # Create the 'docs' folder if not exists
+        mv target/allure-report docs/  # Move the Allure report to 'docs/'
 
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3
       with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}  # GitHub token provided by default
-        publish_dir: ./docs  # The directory containing the HTML report
-        publish_branch: gh-pages  # The branch to publish to for GitHub Pages
+        github_token: ${{ secrets.GITHUB_TOKEN }}  # GitHub token for deployment
+        publish_dir: ./docs/allure-report  # Directory containing the Allure report
+        publish_branch: gh-pages  # Deploy to the 'gh-pages' branch
