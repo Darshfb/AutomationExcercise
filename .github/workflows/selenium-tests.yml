@@ -22,14 +22,16 @@ jobs:
         java-version: '11'  # Specify the Java version
         distribution: 'adopt'  # Optional, specify the OpenJDK distribution
 
-    - name: Install dependencies
+    - name: Install SafariDriver
       run: |
-        ./mvnw install  # Install dependencies using Maven
+        sudo safaridriver --enable
 
-    - name: Run Selenium Tests
-      run: |
-        ./mvnw test  # Run your Selenium tests using Maven
+    - name: Build with Maven
+      run: mvn clean install  # Use `gradle build` if you are using Gradle
 
+    - name: Run Tests
+      run: mvn test  # Use `gradle test` if you are using Gradle
+      
     - name: Generate Allure Report
       run: |
         mvn allure:report  # Generate Allure report using Maven
