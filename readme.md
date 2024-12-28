@@ -25,6 +25,7 @@ Automation Exercise is a website that provides testcases to test an automation s
 
 ## Installation
 
+
 To set up the Automation Exercise application locally, follow these steps:
 
 1. Clone the repository:
