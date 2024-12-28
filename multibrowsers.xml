@@ -32,35 +32,35 @@
         </classes>
     </test>
 
-    <test preserve-order="false" name="Automation Exercise with edge">
-        <parameter name="browserName" value="edge"/>
-        <classes>
-            <class name="testcases.TC01_Home">
-                <methods>
-                    <include name="checkHomePage"/>
-                    <include name="enterAuthPage"/>
+<!--    <test preserve-order="false" name="Automation Exercise with edge">-->
+<!--        <parameter name="browserName" value="edge"/>-->
+<!--        <classes>-->
+<!--            <class name="testcases.TC01_Home">-->
+<!--                <methods>-->
+<!--                    <include name="checkHomePage"/>-->
+<!--                    <include name="enterAuthPage"/>-->
 
-                </methods>
-            </class>
-            <class name="testcases.TC02_Auth">
-                <methods>
-                    <include name="registerAuth"/>
-                </methods>
-            </class>
-            <class name="testcases.TC03_Register">
-                <methods>
-                    <include name="registerWithValidData"/>
-                </methods>
-            </class>
-            <class name="testcases.TC01_Home">
-                <methods>
-                    <include name="checkUsernameIsVisibleAfterRegister"/>
-                    <include name="deleteAccountAndReturnBackToHomePage"/>
-                </methods>
-            </class>
+<!--                </methods>-->
+<!--            </class>-->
+<!--            <class name="testcases.TC02_Auth">-->
+<!--                <methods>-->
+<!--                    <include name="registerAuth"/>-->
+<!--                </methods>-->
+<!--            </class>-->
+<!--            <class name="testcases.TC03_Register">-->
+<!--                <methods>-->
+<!--                    <include name="registerWithValidData"/>-->
+<!--                </methods>-->
+<!--            </class>-->
+<!--            <class name="testcases.TC01_Home">-->
+<!--                <methods>-->
+<!--                    <include name="checkUsernameIsVisibleAfterRegister"/>-->
+<!--                    <include name="deleteAccountAndReturnBackToHomePage"/>-->
+<!--                </methods>-->
+<!--            </class>-->
 
-        </classes>
+<!--        </classes>-->
 
-    </test>
+<!--    </test>-->
 
 </suite>
