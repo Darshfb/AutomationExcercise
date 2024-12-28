@@ -20,7 +20,7 @@ jobs:
       uses: actions/setup-java@v3
       with:
         java-version: '11'  # Specify the Java version
-        distribution: 'adoptopenjdk'  # Optional, specify the OpenJDK distribution
+        distribution: 'adopt'  # Optional, specify the OpenJDK distribution
 
     - name: Install dependencies
       run: |
