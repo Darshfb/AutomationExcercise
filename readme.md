@@ -28,7 +28,7 @@ Automation Exercise is a website that provides testcases to test an automation s
 To set up the Automation Exercise application locally, follow these steps:
 
 1. Clone the repository:
-*   git clone https://github.com/Darshfb/automation-exercise
+*   git clone https://github.com/Darshfb/AutomationExcercise
 2. Navigate to the project directory:
 *   cd automation-exercise
 3. Install dependencies:
