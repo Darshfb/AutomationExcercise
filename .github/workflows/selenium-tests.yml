@@ -3,10 +3,10 @@ name: Run Selenium Tests with Allure Report and Deploy to GitHub Pages
 on:
   push:
     branches:
-      - master  # Trigger on push to 'master' branch
+      - master  # Trigger the workflow on pushes to 'master' branch
   pull_request:
     branches:
-      - master  # Trigger on PR to 'master' branch
+      - master  # Trigger the workflow on PRs to 'master' branch
 
 jobs:
   build:
@@ -19,29 +19,26 @@ jobs:
     - name: Set up JDK 11
       uses: actions/setup-java@v3
       with:
-        java-version: '11'
-        distribution: 'adoptopenjdk'
+        java-version: '11'  # Specify the Java version
+        distribution: 'adoptopenjdk'  # Optional, specify the OpenJDK distribution
 
     - name: Install dependencies
       run: |
-        ./mvnw install  # Run your Maven install
+        ./mvnw install  # Install dependencies using Maven
 
     - name: Run Selenium Tests
       run: |
-        ./mvnw test  # Run your Selenium tests
+        ./mvnw test  # Run your Selenium tests using Maven
 
     - name: Generate Allure Report
       run: |
-        mvn allure:report  # Generate the Allure report
-
-    - name: Move Report to docs Folder
-      run: |
-        mkdir -p docs  # Create the 'docs' folder if not exists
-        mv target/allure-report docs/  # Move the Allure report to 'docs/'
+        mvn allure:report  # Generate Allure report using Maven
+        mkdir -p docs  # Ensure the docs folder exists
+        mv target/allure-report docs/  # Move Allure report to 'docs' folder
 
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3
       with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}  # GitHub token for deployment
+        github_token: ${{ secrets.GITHUB_TOKEN }}  # Use GitHub token for deployment
         publish_dir: ./docs/allure-report  # Directory containing the Allure report
         publish_branch: gh-pages  # Deploy to the 'gh-pages' branch
