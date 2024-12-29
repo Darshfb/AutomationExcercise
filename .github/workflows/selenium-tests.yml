@@ -1,5 +1,13 @@
 name: Run tests and publish report
+
 on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+      
 jobs:
   test:
     runs-on: macos-latest  # Use macOS runner
