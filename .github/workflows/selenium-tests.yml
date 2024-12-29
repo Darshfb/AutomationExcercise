@@ -16,7 +16,7 @@ jobs:
 
       - name: Run Test
         if: always()
-        run: mvn clean verify
+        run: mvn test
         continue-on-error: true
 
       - name: Get Allure history
