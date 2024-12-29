@@ -94,7 +94,6 @@ public class ExtentReporter implements ITestListener {
     public void onTestFailure(ITestResult result) {
         ExtentTest test = testNode.get();
         test.log(Status.FAIL, result.getName() + " failed.");
-//        test.log(Status.FAIL, result.getMethod().getMethodName() + " failed.");
         test.assignCategory(result.getMethod().getGroups());
         test.log(Status.FAIL, result.getThrowable());
 
