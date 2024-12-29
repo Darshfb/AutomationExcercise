@@ -30,8 +30,9 @@ public class ExtentReporter implements ITestListener {
 
     public synchronized static ExtentReports getExtentInstance() {
         if (extent == null) {
-            String timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
-            reportName = "Extent-Report-" + timeStamp + ".html";
+//            String timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
+//            reportName = "Extent-Report-" + timeStamp + ".html";
+            reportName = "index.html";
             String reportPath = System.getProperty("user.dir") + "\\reports\\" + reportName;
 
             // The reporter path and name
