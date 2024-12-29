@@ -20,9 +20,9 @@ jobs:
           distribution: 'adopt'
 
 
-      - name: Install SafariDriver
+      - name: Install chromeDriver
         run: |
-          sudo safaridriver --enable
+          sudo chromedriver --enable
 
       - name: Build with Maven
         run: mvn clean install  # Use `gradle build` if you are using Gradle
