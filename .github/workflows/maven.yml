@@ -21,7 +21,7 @@ jobs:
           distribution: 'temurin'
 
       - name: Install Maven
-        uses: pcalanca/setup-maven@v3
+        uses: actions/setup-maven@v3 # Use the official actions/setup-maven action
         with:
           maven-version: '3.9.1'
 
@@ -36,7 +36,7 @@ jobs:
           java -jar dependencies/extentreports-batch/extentreports-batch-6.10.0.jar -f html -o reports/extentreports/index.html
 
       - name: Upload Artifacts (using the latest version)
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v3 # Use the latest stable version (v3)
         with:
           name: Extent Reports
           path: reports/extentreports
