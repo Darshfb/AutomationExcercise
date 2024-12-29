@@ -3,10 +3,10 @@ name: Selenium Tests with Extent Reports
 on:
   push:
     branches:
-      - master
+      - master   # Change from 'main' to 'master'
   pull_request:
     branches:
-      - master
+      - master   # Change from 'main' to 'master'
 
 jobs:
   build:
@@ -42,7 +42,7 @@ jobs:
           folder: ./extentReports  # Ensure this folder contains the generated report
 
       - name: Upload report as artifact (optional)
-        uses: actions/upload-artifact@v3  # Updated version
+        uses: actions/upload-artifact@v3  # Correct version v3
         with:
           name: extent-report
           path: extentReport.html
