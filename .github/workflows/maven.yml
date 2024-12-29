@@ -2,9 +2,9 @@ name: Selenium Tests with Extent Reports
 
 on:
   push:
-    branches: [ "master" ] # Or any other branches you want to trigger the workflow on
+    branches: [ "master" ]
   pull_request:
-    branches: [ "master" ] # Or any other branches you want to trigger the workflow on
+    branches: [ "master" ]
 
 jobs:
   build:
