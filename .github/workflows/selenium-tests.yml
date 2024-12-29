@@ -20,7 +20,7 @@ jobs:
       uses: actions/setup-java@v3  # Use the latest version of setup-java
       with:
         java-version: '11'  # Specify your Java version
-        distribution: 'adoptopenjdk'  # Optional: specify the OpenJDK distribution
+        distribution: 'adopt'  # Optional: specify the OpenJDK distribution
 
     - name: Install SafariDriver
       run: |
