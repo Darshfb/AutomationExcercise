@@ -1,12 +1,12 @@
-name: Run Selenium Tests with Allure Report1
+name: Run Selenium Tests and Publish Allure Report
 
 on:
   push:
     branches:
-      - main
+      - master
   pull_request:
     branches:
-      - main
+      - master
 
 jobs:
   selenium-tests:
@@ -16,7 +16,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Set up Java JDK 17 (or your required Java version)
+      - name: Set up Java JDK 17
         uses: actions/setup-java@v3
         with:
           java-version: '17'
@@ -30,25 +30,34 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven-
 
-      # Step to set up Chrome and Chromedriver (Correct action)
       - name: Set up ChromeDriver
         uses: browser-actions/setup-chrome-driver@v1
         with:
-          chromedriver-version: 'latest'  # Ensure this matches the version you want
+          chromedriver-version: 'latest'
 
-      # Run Maven to execute the tests
       - name: Run Maven tests
         run: mvn clean test
 
-      # Generate and serve Allure report
-      - name: Generate Allure report
+      - name: Generate Allure Report
         run: mvn allure:serve
 
-      - name: Upload Allure Report as artifact
-        uses: actions/upload-artifact@v3
+      - name: Allure Report with history
+        uses: simple-elf/allure-report-action@v1.11
         with:
-          name: allure-report
-          path: target/site/allure-maven-plugin
+          allure_results: target/allure-results   # Path to allure results (default: allure-results)
+          allure_report: target/allure-report     # Path to generate allure report (default: allure-report)
+          gh_pages: gh-pages                      # The branch to push the report to (default: gh-pages)
+          allure_history: allure-history          # Folder to store history of previous reports (default: allure-history)
+          subfolder: my-test-reports              # Optional subfolder under GitHub Pages (default is empty)
+          keep_reports: 20                       # Optional: Keep last 20 reports (default is 20)
+          github_run_num: ${{ github.run_number }}  # GitHub Actions run number (default: ${{ github.run_number }})
+          github_run_id: ${{ github.run_id }}      # GitHub Actions run ID (default: ${{ github.run_id }})
+          github_repo: ${{ github.repository }}    # GitHub repository (default: ${{ github.repository }})
+          github_repo_owner: ${{ github.repository_owner }}  # GitHub repo owner (default: ${{ github.repository_owner }})
+          github_tests_repo: ${{ github.repository }}  # GitHub repository for tests (default: ${{ github.repository }})
+          report_url: https://your_custom_url.github.io  # Optional: Custom URL for report (default is *.github.io)
+          github_server_url: ${{ github.server_url }}  # GitHub server URL (default: ${{ github.server_url }})
+
 
 
 
