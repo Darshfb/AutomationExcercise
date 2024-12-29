@@ -1,67 +1,40 @@
 name: Run tests and publish report
-
-on: 
-  push:
-    branches:
-      - master  # Trigger on push to the 'master' branch
-  pull_request:
-    branches:
-      - master  # Trigger on PR to 'master' branch
-
+on: [push]
 jobs:
   test:
-    runs-on: ubuntu-latest  # Use Ubuntu runner
-
+    runs-on: ubuntu-latest
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-    - name: Set up JDK 17
-      uses: actions/setup-java@v3
-      with:
-        distribution: zulu
-        java-version: 17
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: zulu
+          java-version: 17
 
-    - name: Install Google Chrome, ChromeDriver, and Xvfb
-      run: |
-        # Update apt and install necessary dependencies for headless testing
-        sudo apt-get update
-        sudo apt-get install -y wget curl unzip
-        sudo apt-get install -y google-chrome-stable  # Install stable Chrome
-        sudo apt-get install -y chromium-chromedriver  # Install ChromeDriver
-        sudo apt-get install -y xvfb  # Install Xvfb to simulate a display for headless tests
+      - name: Run tests
+        run: mvn clean test
 
-    - name: Start Xvfb (Headless Virtual Display)
-      run: |
-        # Start Xvfb in the background and set DISPLAY variable for headless mode
-        Xvfb :99 -screen 0 1280x1024x16 &
-        export DISPLAY=:99
+      - name: Load test report history
+        uses: actions/checkout@v3
+        if: always()
+        continue-on-error: true
+        with:
+          ref: gh-pages
+          path: gh-pages
 
-    - name: Run Selenium Tests with Headless Chrome
-      run: |
-        # Run tests with Maven using Headless Chrome
-        mvn clean test -Dselenium.browser=chrome -Dselenium.headless=true  # Make sure tests are run headlessly with Chrome
+      - name: Build test report
+        uses: simple-elf/allure-report-action@v1.7
+        if: always()
+        with:
+          gh_pages: gh-pages
+          allure_history: allure-history
+          allure_results: build/allure-results
 
-    - name: Load test report history
-      uses: actions/checkout@v3
-      if: always()
-      continue-on-error: true
-      with:
-        ref: gh-pages
-        path: gh-pages
-
-    - name: Build test report
-      uses: simple-elf/allure-report-action@v1.7
-      if: always()
-      with:
-        gh_pages: gh-pages
-        allure_history: allure-history
-        allure_results: target/allure-results  # Use correct path for Allure results
-
-    - name: Publish test report
-      uses: peaceiris/actions-gh-pages@v3
-      if: always()
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_branch: gh-pages
-        publish_dir: allure-history  # Publish to gh-pages branch
+      - name: Publish test report
+        uses: peaceiris/actions-gh-pages@v3
+        if: always()
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages
+          publish_dir: allure-history
