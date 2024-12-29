@@ -15,8 +15,8 @@ jobs:
           distribution: zulu
           java-version: 17
 
-      - name: Run tests
-        run: mvn clean test
+      - name: Run tests in headless mode
+        run: mvn clean test -Djava.awt.headless=true
 
       - name: Check test results
         run: ls -al target/surefire-reports  # Verify if test result files are generated
