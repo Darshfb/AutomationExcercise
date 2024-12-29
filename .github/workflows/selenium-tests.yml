@@ -1,23 +1,98 @@
-name: Run tests and publish report
-on: [push]
+name: Allure Report
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
 
 jobs:
-  test:
+  build:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Set up JDK
+      - name: Set up Java
         uses: actions/setup-java@v3
         with:
-          distribution: zulu
-          java-version: 17
+          distribution: 'temurin'
+          java-version: '11'
 
-      - name: Run tests in headless mode
+      - name: Install dependencies
         run: |
-          mvn clean test -Djava.awt.headless=true -X
+          mvn clean install
 
-      - name: Check test results
-        run: ls -al target/surefire-reports  # Verify test result files are generated
+      - name: Run tests
+        run: |
+          mvn test -Dallure.results.directory=allure-results
+
+      - name: Upload allure results
+        uses: actions/upload-artifact@v3
+        with:
+          name: allure-results
+          path: allure-results
+
+      - name: Generate Allure report
+        uses: actions/github-script@v3
+        with:
+          script: |
+            const fs = require('fs');
+            const path = require('path');
+
+            const core = require('@actions/core');
+
+            const token = core.getInput('github-token');
+
+            const repoToken = core.getInput('repo-token');
+
+            const downloadUrl = `https://api.github.com/repos/<span class="math-inline">\{process\.env\.GITHUB\_REPOSITORY\}/actions/artifacts/</span>{process.env.GITHUB_RUN_ID}/allure-results/download?access_token=${repoToken}`;
+
+            const response = await fetch(downloadUrl);
+
+            const buffer = await response.arrayBuffer();
+
+            const zip = new JSZip();
+
+            zip.file('allure-results.zip', buffer);
+
+            const content = await zip.generateAsync({ type: 'nodebuffer' });
+
+            const uploadUrl = `https://uploads.github.com/repos/<span class="math-inline">\{process\.env\.GITHUB\_REPOSITORY\}/actions/artifacts/</span>{process.env.GITHUB_RUN_ID}/allure-results?name=allure-results.zip&access_token=${token}`;
+
+            const uploadResponse = await fetch(uploadUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/zip'
+                },
+                body: content
+            });
+
+            if (!uploadResponse.ok) {
+                throw new Error(`Failed to upload allure-results.zip: ${uploadResponse.status} ${uploadResponse.statusText}`);
+            }
+
+#name: Run tests and publish report
+#on: [push]
+#
+#jobs:
+#  test:
+#    runs-on: ubuntu-latest
+#
+#    steps:
+#      - name: Checkout code
+#        uses: actions/checkout@v3
+#
+#      - name: Set up JDK
+#        uses: actions/setup-java@v3
+#        with:
+#          distribution: zulu
+#          java-version: 17
+#
+#      - name: Run tests in headless mode
+#        run: |
+#          mvn clean test -Djava.awt.headless=true -X
+#
+#      - name: Check test results
+#        run: ls -al target/surefire-reports  # Verify test result files are generated
