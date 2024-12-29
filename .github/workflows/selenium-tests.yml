@@ -1,4 +1,4 @@
-name: Run tests and publish report1
+name: Run tests and publish report
 on: [push]
 
 jobs:
@@ -18,8 +18,8 @@ jobs:
       - name: Run tests and generate allure results
         run: |
           mvn clean test
-          # Verify allure results directory exists and has files
-          ls -al build/allure-results
+          ls -al target/surefire-reports  # Verify Surefire test results are there
+          ls -al target/allure-results  # Verify Allure test results are generated
 
       - name: Checkout gh-pages branch to load report history
         uses: actions/checkout@v3
@@ -35,7 +35,7 @@ jobs:
         with:
           gh_pages: gh-pages
           allure_history: allure-history
-          allure_results: build/allure-results
+          allure_results: target/surefire-reports
 
       - name: Publish Allure test report
         uses: peaceiris/actions-gh-pages@v3
