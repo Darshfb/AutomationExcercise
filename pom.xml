@@ -87,6 +87,13 @@
                             ${allure.cmd.download.url}/${allure.version}/allure-commandline-${allure.version}.zip
                         </allureDownloadUrl>
                     </configuration>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>report</goal> <!-- This generates the Allure report -->
+                            </goals>
+                        </execution>
+                    </executions>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
