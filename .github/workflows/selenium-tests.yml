@@ -1,59 +1,37 @@
-- name: Allure Report with history
-# You may pin to the exact commit or the version.
-# uses: simple-elf/allure-report-action@91e6ff976a8b2303f2551ca36c39ba5256952c08
-  uses: simple-elf/allure-report-action@v1.11
+            - name: allure-html-reporter-github-pages
+  # You may pin to the exact commit or the version.
+  # uses: PavanMudigonda/allure-html-reporter-github-pages@494af460cf5d0c0a0a4e48f800fc3fe48891cf21
+  uses: PavanMudigonda/allure-html-reporter-github-pages@v1.2
   with:
-  # Allure test result data dir
-  allure_results: # default is allure-results
-  # Allure report target dir
-  allure_report: # default is allure-report
-  # Folder with gh-pages branch
-  gh_pages: # default is gh-pages
-  # Folder for allure history
-  allure_history: # default is allure-history
-  # subfolder
-  subfolder: # optional, default is
-  # Keep X last reports
-  keep_reports: # optional, default is 20
-  # GitHub Actions build number
-  github_run_num: # default is ${{ github.run_number }}
-  # GitHub Actions run id
-  github_run_id: # default is ${{ github.run_id }}
-  # GitHub repository
-  github_repo: # default is ${{ github.repository }}
-  # GitHub repository owner
-  github_repo_owner: # default is ${{ github.repository_owner }}
-  # GitHub repository where test are run
-  github_tests_repo: # default is ${{ github.repository }}
-  # Use a custom URL instead of *.github.io
-  report_url: # optional, default is
-  # GitHub server URL
-  github_server_url: # default is ${{ github.server_url }}
+    # ALLURE RESULTS JSON FILE
 
-
-
-
-
-#name: Run tests and publish report
-#on: [push]
-#
-#jobs:
-#  test:
-#    runs-on: ubuntu-latest
-#
-#    steps:
-#      - name: Checkout code
-#        uses: actions/checkout@v3
-#
-#      - name: Set up JDK
-#        uses: actions/setup-java@v3
-#        with:
-#          distribution: zulu
-#          java-version: 17
-#
-#      - name: Run tests in headless mode
-#        run: |
-#          mvn clean test -Djava.awt.headless=true -X
-#
-#      - name: Check test results
-#        run: ls -al target/surefire-reports  # Verify test result files are generated
+    ALLURE_RESULTS_JSON: # optional, default is ./
+    # Workflow File NAME
+    WORKFLOW_ID: # default is 
+    # Github Token
+    token: # default is ${{ github.token }}
+    # Test Environment
+    test_env: # default is QA
+    # Allure test result data dir
+    allure_results: # default is allure-results
+    # Allure report target dir
+    allure_report: # default is allure-report
+    # Folder with gh-pages branch
+    gh_pages: # default is gh-pages
+    # Folder for allure history
+    allure_history: # default is allure-history
+    # subfolder
+    subfolder: # optional, default is 
+    # Keep X last reports
+    keep_reports: # optional, default is 20
+    # GitHub Actions build number
+    github_run_num: # default is ${{ github.run_number }}
+    # GitHub Actions run id
+    github_run_id: # default is ${{ github.run_id }}
+    # GitHub repository
+    github_repo: # default is ${{ github.repository }}
+    # GitHub repository owner
+    github_repo_owner: # default is ${{ github.repository_owner }}
+    # Use a custom URL instead of *.github.io
+    report_url: # optional, default is 
+          
