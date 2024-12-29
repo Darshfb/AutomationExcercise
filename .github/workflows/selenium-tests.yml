@@ -16,11 +16,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Set up JDK 17 (or your preferred version)
+      - name: Set up JDK 17 (or another version you use)
         uses: actions/setup-java@v3
         with:
           java-version: '17'
-          distribution: 'adopt'
+          distribution: 'adoptopenjdk'
 
       - name: Cache Maven dependencies
         uses: actions/cache@v3
@@ -35,13 +35,15 @@ jobs:
 
       - name: Generate Allure report
         run: mvn allure:serve
-        # Optionally, use `mvn allure:report` for generating the report without serving it.
+        # If you only want to generate the report without serving it, use:
+        # run: mvn allure:report
 
       - name: Upload Allure Report as artifact
         uses: actions/upload-artifact@v3
         with:
           name: allure-report
           path: target/site/allure-maven-plugin
+
 
 
 
