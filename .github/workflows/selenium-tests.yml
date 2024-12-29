@@ -12,8 +12,11 @@ jobs:
           distribution: zulu
           java-version: 17
 
-      - name: Run tests
-        run: mvn test
+      - name: Build with Maven
+        run: mvn clean install  # Use `gradle build` if you are using Gradle
+
+      - name: Run Tests
+        run: mvn test  # Use `gradle test` if you are using Gradle
 
       - name: Load test report history
         uses: actions/checkout@v3
