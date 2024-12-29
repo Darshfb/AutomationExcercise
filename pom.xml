@@ -39,7 +39,9 @@
                         <skipTests>false</skipTests> <!-- Ensure tests are not skipped -->
                         <argLine>-Xmx1024m</argLine> <!-- Increase JVM heap space if needed -->
                         <useFile>false</useFile> <!-- Output to stdout to easily debug -->
-
+                        <includes>
+                            <include>**/TC*.java</include> <!-- Matches any class starting with "TC" -->
+                        </includes>
                         <suiteXmlFiles>
                             <suiteXmlFile>testng.xml</suiteXmlFile>
                         </suiteXmlFiles>
