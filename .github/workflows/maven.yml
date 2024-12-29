@@ -38,17 +38,17 @@
 #          branch: gh-pages
 #          folder: ./reports
 
-name: CI Tests on Ubuntu
+name: ExtentReport Workflow
 
 on:
   push:
-    branches: [ master ]
+    branches: [ "master" ]
   pull_request:
-    branches: [ master ]
+    branches: [ "master" ]
 
 jobs:
   build:
-    name: Test on Ubuntu
+
     runs-on: ubuntu-latest
 
     steps:
