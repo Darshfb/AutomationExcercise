@@ -1,62 +1,35 @@
-name: Run Selenium Tests and Publish Allure Report
+- name: Allure Report with history
+# You may pin to the exact commit or the version.
+# uses: simple-elf/allure-report-action@91e6ff976a8b2303f2551ca36c39ba5256952c08
+  uses: simple-elf/allure-report-action@v1.11
+  with:
+  # Allure test result data dir
+  allure_results: # default is allure-results
+  # Allure report target dir
+  allure_report: # default is allure-report
+  # Folder with gh-pages branch
+  gh_pages: # default is gh-pages
+  # Folder for allure history
+  allure_history: # default is allure-history
+  # subfolder
+  subfolder: # optional, default is
+  # Keep X last reports
+  keep_reports: # optional, default is 20
+  # GitHub Actions build number
+  github_run_num: # default is ${{ github.run_number }}
+  # GitHub Actions run id
+  github_run_id: # default is ${{ github.run_id }}
+  # GitHub repository
+  github_repo: # default is ${{ github.repository }}
+  # GitHub repository owner
+  github_repo_owner: # default is ${{ github.repository_owner }}
+  # GitHub repository where test are run
+  github_tests_repo: # default is ${{ github.repository }}
+  # Use a custom URL instead of *.github.io
+  report_url: # optional, default is
+  # GitHub server URL
+  github_server_url: # default is ${{ github.server_url }}
 
-on:
-  push:
-    branches:
-      - master
-  pull_request:
-    branches:
-      - master
-
-jobs:
-  selenium-tests:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Set up Java JDK 17
-        uses: actions/setup-java@v3
-        with:
-          java-version: '17'
-          distribution: 'adopt'
-
-      - name: Cache Maven dependencies
-        uses: actions/cache@v3
-        with:
-          path: ~/.m2/repository
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-          restore-keys: |
-            ${{ runner.os }}-maven-
-
-      - name: Set up ChromeDriver
-        uses: browser-actions/setup-chrome-driver@v1
-        with:
-          chromedriver-version: 'latest'
-
-      - name: Run Maven tests
-        run: mvn clean test
-
-      - name: Generate Allure Report
-        run: mvn allure:serve
-
-      - name: Allure Report with history
-        uses: simple-elf/allure-report-action@v1.11
-        with:
-          allure_results: target/allure-results   # Path to allure results (default: allure-results)
-          allure_report: target/allure-report     # Path to generate allure report (default: allure-report)
-          gh_pages: gh-pages                      # The branch to push the report to (default: gh-pages)
-          allure_history: allure-history          # Folder to store history of previous reports (default: allure-history)
-          subfolder: my-test-reports              # Optional subfolder under GitHub Pages (default is empty)
-          keep_reports: 20                       # Optional: Keep last 20 reports (default is 20)
-          github_run_num: ${{ github.run_number }}  # GitHub Actions run number (default: ${{ github.run_number }})
-          github_run_id: ${{ github.run_id }}      # GitHub Actions run ID (default: ${{ github.run_id }})
-          github_repo: ${{ github.repository }}    # GitHub repository (default: ${{ github.repository }})
-          github_repo_owner: ${{ github.repository_owner }}  # GitHub repo owner (default: ${{ github.repository_owner }})
-          github_tests_repo: ${{ github.repository }}  # GitHub repository for tests (default: ${{ github.repository }})
-          report_url: https://your_custom_url.github.io  # Optional: Custom URL for report (default is *.github.io)
-          github_server_url: ${{ github.server_url }}  # GitHub server URL (default: ${{ github.server_url }})
 
 
 
