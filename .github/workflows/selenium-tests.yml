@@ -1,86 +1,49 @@
-name: Allure Report
+name: Run Selenium Tests with Allure Report
 
 on:
   push:
-    branches: [ "master" ]
+    branches:
+      - master
   pull_request:
-    branches: [ "master" ]
+    branches:
+      - master
 
 jobs:
-  build:
+  selenium-tests:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Set up Java
+      - name: Set up JDK 17 (or your preferred version)
         uses: actions/setup-java@v3
         with:
-          distribution: 'temurin'
-          java-version: '11'
+          java-version: '17'
+          distribution: 'adoptopenjdk'
 
-      - name: Install Xvfb
-        run: |
-          sudo apt-get update
-          sudo apt-get install xvfb
-
-      - name: Start Xvfb
-        run: |
-          Xvfb :99 -screen 0 1280x1024x24 &
-          export DISPLAY=:99
-
-      - name: Install dependencies
-        run: |
-          mvn clean install
-
-      - name: Run tests
-        run: |
-          mvn test -Dallure.results.directory=allure-results
-
-      - name: Upload allure results
-        uses: actions/upload-artifact@v3
+      - name: Cache Maven dependencies
+        uses: actions/cache@v3
         with:
-          name: allure-results
-          path: allure-results
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
+      - name: Build and run tests
+        run: mvn clean test
 
       - name: Generate Allure report
-        uses: actions/github-script@v3
+        run: mvn allure:serve
+        # Optionally, use `mvn allure:report` for generating the report without serving it.
+
+      - name: Upload Allure Report as artifact
+        uses: actions/upload-artifact@v3
         with:
-          script: |
-            const fs = require('fs');
-            const path = require('path');
+          name: allure-report
+          path: target/site/allure-maven-plugin
 
-            const core = require('@actions/core');
 
-            const token = core.getInput('github-token');
-
-            const repoToken = core.getInput('repo-token');
-
-            const downloadUrl = `https://api.github.com/repos/<span class="math-inline">\{process\.env\.GITHUB\_REPOSITORY\}/actions/artifacts/</span>{process.env.GITHUB_RUN_ID}/allure-results/download?access_token=${repoToken}`;
-
-            const response = await fetch(downloadUrl);
-
-            const buffer = await response.arrayBuffer();
-
-            const zip = new JSZip();
-
-            zip.file('allure-results.zip', buffer);
-
-            const content = await zip.generateAsync({ type: 'nodebuffer' });
-
-            const uploadUrl = `https://uploads.github.com/repos/<span class="math-inline">\{process\.env\.GITHUB\_REPOSITORY\}/actions/artifacts/</span>{process.env.GITHUB_RUN_ID}/allure-results?name=allure-results.zip&access_token=${token}`;
-
-            const uploadResponse = await fetch(uploadUrl, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/zip'
-                },
-                body: content
-            });
-
-            if (!uploadResponse.ok) {
-                throw new Error(`Failed to upload allure-results.zip: ${uploadResponse.status} ${uploadResponse.statusText}`);
-            }
 
 #name: Run tests and publish report
 #on: [push]
