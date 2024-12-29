@@ -46,4 +46,4 @@ jobs:
         uses: actions/upload-artifact@v3  # Correct version v3
         with:
           name: extent-report
-          path: extentReport.html
+          path: extentReport.html  # Ensure this is the correct path to your generated report
