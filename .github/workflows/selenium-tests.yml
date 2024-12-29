@@ -1,44 +1,47 @@
-name: Run Selenium Tests with Allure Report and Deploy to GitHub Pages
+name: MacRunSafari
 
 on:
   push:
     branches:
-      - master  # Trigger the workflow on pushes to 'master' branch
+      - master  # Trigger on push to 'master' branch
   pull_request:
     branches:
-      - master  # Trigger the workflow on PRs to 'master' branch
+      - master  # Trigger on PR to 'master' branch
 
 jobs:
   build:
-    runs-on: macos-latest  # Use macOS runner (or change as needed)
+    runs-on: macos-latest  # Use macOS runner
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v3
+    - name: Checkout code
+      uses: actions/checkout@v3  # Use the latest version of checkout action
 
-    - name: Set up JDK 11
-      uses: actions/setup-java@v3
+    - name: Set up JDK
+      uses: actions/setup-java@v3  # Use the latest version of setup-java
       with:
-        java-version: '11'  # Specify the Java version
-        distribution: 'adoptopenjdk'  # Optional, specify the OpenJDK distribution
+        java-version: '11'  # Specify your Java version
+        distribution: 'adopt'  # Optional: specify the OpenJDK distribution
 
-    - name: Install dependencies
+    - name: Install SafariDriver
       run: |
-        ./mvnw install  # Install dependencies using Maven
+        sudo safaridriver --enable  # Enable SafariDriver for testing with Safari
 
-    - name: Run Selenium Tests
-      run: |
-        ./mvnw test  # Run your Selenium tests using Maven
+    - name: Build with Maven
+      run: mvn clean install  # Builds the project using Maven
+
+    # - name: Run Tests
+    #   run: mvn test  # Run your tests using Maven
 
     - name: Generate Allure Report
       run: |
-        mvn allure:report  # Generate Allure report using Maven
-        mkdir -p docs  # Ensure the docs folder exists
-        mv target/allure-report docs/  # Move Allure report to 'docs' folder
+        # Generate the Allure report using Maven
+        mvn allure:report
+        mkdir -p docs/allure-report  # Create a folder for the report
+        mv target/allure-report docs/allure-report  # Move the generated report to docs folder
 
-    - name: Deploy to GitHub Pages
-      uses: peaceiris/actions-gh-pages@v3
+    - name: Deploy Allure Report to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3  # Action to deploy to GitHub Pages
       with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}  # Use GitHub token for deployment
-        publish_dir: ./docs/allure-report  # Directory containing the Allure report
-        publish_branch: gh-pages  # Deploy to the 'gh-pages' branch
+        github_token: ${{ secrets.GITHUB_TOKEN }}  # GitHub token to push changes to gh-pages
+        publish_dir: ./docs/allure-report  # Directory to deploy
+        publish_branch: gh-pages  # Deploy to 'gh-pages' branch
