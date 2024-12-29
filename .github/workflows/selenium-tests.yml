@@ -9,7 +9,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -19,6 +18,16 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '11'
+
+      - name: Install Xvfb
+        run: |
+          sudo apt-get update
+          sudo apt-get install xvfb
+
+      - name: Start Xvfb
+        run: |
+          Xvfb :99 -screen 0 1280x1024x24 &
+          export DISPLAY=:99
 
       - name: Install dependencies
         run: |
