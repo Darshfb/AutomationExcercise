@@ -15,10 +15,19 @@ jobs:
           distribution: zulu
           java-version: 17
 
-      - name: Run tests with headless mode
+      - name: Install Xvfb (virtual display)
+        run: sudo apt-get install -y xvfb
+
+      - name: Start Xvfb (virtual display)
+        run: Xvfb :99 -screen 0 1280x1024x24 &
+
+      - name: Set display environment variable
+        run: export DISPLAY=:99
+
+      - name: Run tests with Xvfb
         run: |
-          mvn clean test -Djava.awt.headless=true -X  # Run in headless mode and enable debug output
-          ls -al target/surefire-reports  # Verify the test results
+          mvn clean test -Djava.awt.headless=true -X  # Run tests in headless mode
+          ls -al target/surefire-reports  # Check if test results are generated
 
       - name: Checkout gh-pages branch to load report history
         uses: actions/checkout@v3
@@ -32,4 +41,14 @@ jobs:
         uses: simple-elf/allure-report-action@v1.7
         if: always()
         with:
- 
+          gh_pages: gh-pages
+          allure_history: allure-history
+          allure_results: target/surefire-reports
+
+      - name: Publish Allure test report
+        uses: peaceiris/actions-gh-pages@v3
+        if: always()
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages
+          publish_dir: allure-history
