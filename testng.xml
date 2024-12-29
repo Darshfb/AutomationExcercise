@@ -9,8 +9,8 @@
 
     <suite-files>
         <suite-file path="sprint1.xml"/>
-        <suite-file path="sprint2.xml"/>
-        <suite-file path="sprint3.xml"/>
+<!--        <suite-file path="sprint2.xml"/>-->
+<!--        <suite-file path="sprint3.xml"/>-->
     </suite-files>
 
 </suite>

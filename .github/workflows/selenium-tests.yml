@@ -1,57 +1,40 @@
-name: MacRunSafari
-
+name: Run tests and publish report
 on:
-  push:
-    branches:
-      - master
-  pull_request:
-    branches:
-      - master
-
 jobs:
-  build:
+  test:
     runs-on: macos-latest  # Use macOS runner
-
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3  # Use the latest version of checkout action
+      - uses: actions/checkout@v3
 
       - name: Set up JDK
-        uses: actions/setup-java@v3  # Use the latest version of setup-java
+        uses: actions/setup-java@v3
         with:
-          java-version: '11'  # Specify your Java version
-          distribution: 'adopt'
+          distribution: zulu
+          java-version: 17
 
-      - name: Install SafariDriver
-        run: |
-          sudo safaridriver --enable  # Enable SafariDriver for testing with Safari
+      - name: Run tests
+        run: ./gradlew clean test
 
-      - name: Build with Maven
-        run: mvn clean install  # Builds the project using Maven
-
-      - name: Run Tests
-        run: mvn test  # Run your tests using Maven
-
-      - name: Generate Allure Report
-        run: |
-          mvn allure:report  # Generate Allure report using Maven
-          # Check if the Allure report is generated
-          ls -R target/  # List contents of the target folder for debugging
-
-      - name: Move Allure Report to docs Folder
-        run: |
-          # Check if allure-report folder exists in the target directory
-          if [ -d "target/allure-report" ]; then
-            mkdir -p docs/allure-report  # Create docs folder if it doesn't exist
-            mv target/allure-report/* docs/allure-report/  # Move report to docs folder
-          else
-            echo "Allure report not found at target/allure-report"  # Log error if report is missing
-            exit 1  # Fail the build
-          fi
-
-      - name: Deploy Allure Report to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3  # Action to deploy to GitHub Pages
+      - name: Load test report history
+        uses: actions/checkout@v3
+        if: always()
+        continue-on-error: true
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}  # GitHub token to push changes to gh-pages
-          publish_dir: ./docs/allure-report  # Directory to deploy
-          publish_branch: gh-pages  # Deploy to 'gh-pages' branch
+          ref: gh-pages
+          path: gh-pages
+
+      - name: Build test report
+        uses: simple-elf/allure-report-action@v1.7
+        if: always()
+        with:
+          gh_pages: gh-pages
+          allure_history: allure-history
+          allure_results: build/allure-results
+
+      - name: Publish test report
+        uses: peaceiris/actions-gh-pages@v3
+        if: always()
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages
+          publish_dir: allure-history
