@@ -1,0 +1,40 @@
+name: generate allure report using github actions
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up JDK 11
+        uses: actions/setup-java@v2
+        with:
+          java-version: '11'
+          distribution: 'temurin'
+      - name: Test with Maven
+        run: mvn clean test -DsuiteXmlFile="src/test/resources/testng.xml"
+      - name: Generate Allure Report
+        run: mvn io.qameta.allure:allure-maven:server:2.10.0:generate -Dallure.results.directory=target/allure-results  -Dallure.results.directory=target/allure-results
+      - name: Open Allure Report
+        run: allure serve target/allure-results
+      - name: Upload Allure Report
+        uses: actions/upload-artifact@v2
+        with:
+          name: allure-report
+          path: target/allure-results
+      - name: Open Allure Report
+        run: allure open
+
+      - name: Upload Allure Report
+        uses: actions/upload-artifact@v2
+        with:
+          name: allure-report
+          path: target/allure-results
+
