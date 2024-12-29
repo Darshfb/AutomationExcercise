@@ -3,45 +3,55 @@ name: MacRunSafari
 on:
   push:
     branches:
-      - master  # Trigger on push to 'master' branch
+      - master
   pull_request:
     branches:
-      - master  # Trigger on PR to 'master' branch
+      - master
 
 jobs:
   build:
     runs-on: macos-latest  # Use macOS runner
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3  # Use the latest version of checkout action
+      - name: Checkout code
+        uses: actions/checkout@v3  # Use the latest version of checkout action
 
-    - name: Set up JDK
-      uses: actions/setup-java@v3  # Use the latest version of setup-java
-      with:
-        java-version: '11'  # Specify your Java version
-        distribution: 'adopt'  # Optional: specify the OpenJDK distribution
+      - name: Set up JDK
+        uses: actions/setup-java@v3  # Use the latest version of setup-java
+        with:
+          java-version: '11'  # Specify your Java version
+          distribution: 'adopt'
 
-    - name: Install SafariDriver
-      run: |
-        sudo safaridriver --enable  # Enable SafariDriver for testing with Safari
+      - name: Install SafariDriver
+        run: |
+          sudo safaridriver --enable  # Enable SafariDriver for testing with Safari
 
-    - name: Build with Maven
-      run: mvn clean install  # Builds the project using Maven
+      - name: Build with Maven
+        run: mvn clean install  # Builds the project using Maven
 
-    # - name: Run Tests
-    #   run: mvn test  # Run your tests using Maven
+      - name: Run Tests
+        run: mvn test  # Run your tests using Maven
 
-    - name: Generate Allure Report
-      run: |
-        # Generate the Allure report using Maven
-        mvn allure:report
-        mkdir -p docs/allure-report  # Create a folder for the report
-        mv target/allure-report docs/allure-report  # Move the generated report to docs folder
+      - name: Generate Allure Report
+        run: |
+          mvn allure:report  # Generate Allure report using Maven
+          # Check if the Allure report is generated
+          ls -R target/  # List contents of the target folder for debugging
 
-    - name: Deploy Allure Report to GitHub Pages
-      uses: peaceiris/actions-gh-pages@v3  # Action to deploy to GitHub Pages
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}  # GitHub token to push changes to gh-pages
-        publish_dir: ./docs/allure-report  # Directory to deploy
-        publish_branch: gh-pages  # Deploy to 'gh-pages' branch
+      - name: Move Allure Report to docs Folder
+        run: |
+          # Check if allure-report folder exists in the target directory
+          if [ -d "target/allure-report" ]; then
+            mkdir -p docs/allure-report  # Create docs folder if it doesn't exist
+            mv target/allure-report/* docs/allure-report/  # Move report to docs folder
+          else
+            echo "Allure report not found at target/allure-report"  # Log error if report is missing
+            exit 1  # Fail the build
+          fi
+
+      - name: Deploy Allure Report to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3  # Action to deploy to GitHub Pages
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}  # GitHub token to push changes to gh-pages
+          publish_dir: ./docs/allure-report  # Directory to deploy
+          publish_branch: gh-pages  # Deploy to 'gh-pages' branch
