@@ -36,6 +36,10 @@
                     <artifactId>maven-surefire-plugin</artifactId>
                     <version>${maven.surefire.plugin.version}</version>
                     <configuration>
+                        <skipTests>false</skipTests> <!-- Ensure tests are not skipped -->
+                        <argLine>-Xmx1024m</argLine> <!-- Increase JVM heap space if needed -->
+                        <useFile>false</useFile> <!-- Output to stdout to easily debug -->
+
                         <suiteXmlFiles>
                             <suiteXmlFile>testng.xml</suiteXmlFile>
                         </suiteXmlFiles>

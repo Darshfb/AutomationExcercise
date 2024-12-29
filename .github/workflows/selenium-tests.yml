@@ -1,61 +1,45 @@
-name: Test check
-
-on:
-  pull_request:
-  push:
-    branches: ['main', 'master']
+name: Run tests and publish report
+on: [push]
 
 jobs:
-  build:
-    permissions:
-      contents: write
-      pull-requests: write
-
+  test:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout
+      - name: Checkout code
         uses: actions/checkout@v3
-      - name: Use Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 'lts/*'
-      - run: npm ci
-      - run: npm run precommit
-      - run: google-chrome --version
-      - run: npm run test:headless
 
-      - name: Checkout gh-pages
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: zulu
+          java-version: 17
+
+      - name: Run tests with debug output
+        run: |
+          mvn clean test -X  # This will give you detailed debug output
+          ls -al target/surefire-reports  # Verify that test results are generated
+
+      - name: Checkout gh-pages branch to load report history
         uses: actions/checkout@v3
         if: always()
         continue-on-error: true
         with:
-          ref: gh-pages # branch name
-          path: gh-pages-dir # checkout path
+          ref: gh-pages
+          path: gh-pages
 
-      - name: Allure Report Action
-        uses: mgrybyk/allure-report-branch-action@v1
-        if: always()
-        continue-on-error: true
-        id: allure
-        with:
-          report_id: 'allure'
-          gh_pages: 'gh-pages-dir'
-          report_dir: 'report/allure-results'
-          list_dirs: true
-
-      - name: Git Commit and Push Action
-        uses: mgrybyk/git-commit-pull-push-action@v1
+      - name: Build Allure report
+        uses: simple-elf/allure-report-action@v1.7
         if: always()
         with:
-          repository: gh-pages-dir
-          branch: gh-pages
+          gh_pages: gh-pages
+          allure_history: allure-history
+          allure_results: target/surefire-reports
 
-      - name: Comment PR with Allure Report link
-        if: ${{ always() && github.event_name == 'pull_request' && steps.allure.outputs.report_url }}
-        continue-on-error: true
-        uses: thollander/actions-comment-pull-request@v2
+      - name: Publish Allure test report
+        uses: peaceiris/actions-gh-pages@v3
+        if: always()
         with:
-          message: |
-            ${{ steps.allure.outputs.test_result_icon }} [Allure Report](${{ steps.allure.outputs.report_url }}) | ${{ steps.allure.outputs.test_result_passed }}/${{ steps.self_test.outputs.test_result_failed }}/${{ steps.self_test.outputs.test_result_total }} | [History](${{ steps.self_test.outputs.report_history_url }})
-          comment_tag: allure_allure
-          mode: recreate
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages
+          publish_dir: allure-history
