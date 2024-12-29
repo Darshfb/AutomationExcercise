@@ -20,7 +20,7 @@ jobs:
       uses: actions/setup-java@v2
       with:
         java-version: '17'  # Set up JDK 17
-        distribution: 'adoptopenjdk'
+        distribution: 'adopt'
 
     - name: Install Google Chrome and ChromeDriver
       run: |
