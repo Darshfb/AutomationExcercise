@@ -70,9 +70,9 @@ public class DriverFactory
                 chromeOptions.setExperimentalOption("excludeSwitches", new String[]{"enable-automation"});
                 chromeOptions.setExperimentalOption("prefs", prefs);
                 // Mobile emulation: e.g., emulate an iPhone 6
-                chromeOptions.setExperimentalOption("mobileEmulation", Map.of(
-                        "deviceName", "iPhone 6"
-                ));
+//                chromeOptions.setExperimentalOption("mobileEmulation", Map.of(
+//                        "deviceName", "iPhone 6"
+//                ));
 
                 chromeOptions.addArguments("download.default_directory=" + System.getProperty("user.dir") + "\\sources");
                 chromeOptions.addArguments("--disable-extensions");// Disable safe browsing to allow all downloads
