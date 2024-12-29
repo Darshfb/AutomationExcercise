@@ -1,48 +1,44 @@
-name: Run Selenium Tests with Allure Report
+name: Run tests and publish report
 
-on:
-  push:
-    branches:
-      - master
-  pull_request:
-    branches:
-      - master
-
+on: [push]
 jobs:
-  selenium-tests:
+  test:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-      - name: Set up JDK 17 (or another version you use)
+      - name: Set up JDK
         uses: actions/setup-java@v3
         with:
-          java-version: '17'
-          distribution: 'adopt'
+          distribution: zulu
+          java-version: 17
 
-      - name: Cache Maven dependencies
-        uses: actions/cache@v3
+      - name: Run tests
+        run: mvn test
+
+      - name: Load test report history
+        uses: actions/checkout@v3
+        if: always()
+        continue-on-error: true
         with:
-          path: ~/.m2/repository
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-          restore-keys: |
-            ${{ runner.os }}-maven-
+          ref: gh-pages
+          path: gh-pages
 
-      - name: Build and run tests
-        run: mvn clean test
-
-      - name: Generate Allure report
-        run: mvn allure:serve
-        # If you only want to generate the report without serving it, use:
-        # run: mvn allure:report
-
-      - name: Upload Allure Report as artifact
-        uses: actions/upload-artifact@v3
+      - name: Build test report
+        uses: simple-elf/allure-report-action@v1.7
+        if: always()
         with:
-          name: allure-report
-          path: target/site/allure-maven-plugin
+          gh_pages: gh-pages
+          allure_history: allure-history
+          allure_results: build/allure-results
+
+      - name: Publish test report
+        uses: peaceiris/actions-gh-pages@v3
+        if: always()
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages
+          publish_dir: allure-history
 
 
 
