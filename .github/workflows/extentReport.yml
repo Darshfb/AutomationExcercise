@@ -27,15 +27,15 @@ jobs:
 
       - name: Build and Test
         run: |
-          mvn clean install test 
+          mvn clean install test
 
       - name: Generate Extent Reports
         run: |
-          mkdir -p reports/extentreports 
-          cp target/surefire-reports/*.xml reports/extentreports/ 
-          java -jar dependencies/extentreports-batch/extentreports-batch-6.10.0.jar -f html -o reports/extentreports/index.html 
+          mkdir -p reports/extentreports
+          cp target/surefire-reports/*.xml reports/extentreports/
+          java -jar dependencies/extentreports-batch/extentreports-batch-6.10.0.jar -f html -o reports/extentreports/index.html
 
-      - name: Upload Artifacts
+      - name: Upload Artifacts (using the latest version)
         uses: actions/upload-artifact@v5
         with:
           name: Extent Reports
@@ -46,5 +46,5 @@ jobs:
         with:
           script: |
             github.context.payload.outputs = {
-              'report_url': 'https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}/artifacts/${{ github.job }}/Extent%20Reports/index.html' 
+              'report_url': 'https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}/artifacts/${{ github.job }}/Extent%20Reports/index.html'
             }
