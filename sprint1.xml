@@ -70,61 +70,61 @@
         </classes>
     </test>
 
-            <test preserve-order="false" name="Test Case 3: Login User with incorrect email and password">
-                <classes>
-                    <class name="testcases.TC01_Home">
-                        <methods>
-                            <include name="checkHomePage"/>
-                            <include name="enterAuthPage"/>
+    <test preserve-order="false" name="Test Case 3: Login User with incorrect email and password">
+        <classes>
+            <class name="testcases.TC01_Home">
+                <methods>
+                    <include name="checkHomePage"/>
+                    <include name="enterAuthPage"/>
 
-                        </methods>
-                    </class>
-                    <class name="testcases.TC02_Auth">
-                        <methods>
-                            <include name="enterIncorrectEmailAndPassword"/>
-                        </methods>
-                    </class>
-                </classes>
-            </test>
+                </methods>
+            </class>
+            <class name="testcases.TC02_Auth">
+                <methods>
+                    <include name="enterIncorrectEmailAndPassword"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
 
-            <test preserve-order="false" name="Test Case 4: Logout User">
-                <classes>
-                    <class name="testcases.TC01_Home">
-                        <methods>
-                            <include name="checkHomePage"/>
+    <test preserve-order="false" name="Test Case 4: Logout User">
+        <classes>
+            <class name="testcases.TC01_Home">
+                <methods>
+                    <include name="checkHomePage"/>
 
-                            <include name="enterAuthPage"/>
+                    <include name="enterAuthPage"/>
 
-                        </methods>
-                    </class>
-                    <class name="testcases.TC02_Auth">
-                        <methods>
-                            <include name="loginAuth"/>
-                        </methods>
-                    </class>
-                    <class name="testcases.TC01_Home">
-                        <methods>
-                            <include name="checkUsernameIsVisible"/>
-                            <include name="logoutAfterLogin"/>
-                        </methods>
-                    </class>
-                </classes>
-            </test>
+                </methods>
+            </class>
+            <class name="testcases.TC02_Auth">
+                <methods>
+                    <include name="loginAuth"/>
+                </methods>
+            </class>
+            <class name="testcases.TC01_Home">
+                <methods>
+                    <include name="checkUsernameIsVisible"/>
+                    <include name="logoutAfterLogin"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
 
-            <test preserve-order="false" name="Test Case 5: Register User with existing email">
-                <classes>
-                    <class name="testcases.TC01_Home">
-                        <methods>
-                            <include name="checkHomePage"/>
-                            <include name="enterAuthPage"/>
-                        </methods>
-                    </class>
-                    <class name="testcases.TC02_Auth">
-                        <methods>
-                            <include name="registerAuthWithExistingEmail"/>
-                        </methods>
-                    </class>
-                </classes>
-            </test>
+    <test preserve-order="false" name="Test Case 5: Register User with existing email">
+        <classes>
+            <class name="testcases.TC01_Home">
+                <methods>
+                    <include name="checkHomePage"/>
+                    <include name="enterAuthPage"/>
+                </methods>
+            </class>
+            <class name="testcases.TC02_Auth">
+                <methods>
+                    <include name="registerAuthWithExistingEmail"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
 
 </suite>
