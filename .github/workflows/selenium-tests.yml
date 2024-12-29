@@ -1,44 +1,54 @@
-name: Run tests and publish report
+name: Run Selenium Tests with Allure Report
 
-on: [push]
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
 jobs:
-  test:
+  selenium-tests:
     runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
 
-      - name: Set up JDK
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Java JDK 17 (or whatever version you're using)
         uses: actions/setup-java@v3
         with:
-          distribution: zulu
-          java-version: 17
+          java-version: '17'
+          distribution: 'adopt'
 
-      - name: Run tests
-        run: mvn test
-
-      - name: Load test report history
-        uses: actions/checkout@v3
-        if: always()
-        continue-on-error: true
+      - name: Cache Maven dependencies
+        uses: actions/cache@v3
         with:
-          ref: gh-pages
-          path: gh-pages
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
 
-      - name: Build test report
-        uses: simple-elf/allure-report-action@v1.7
-        if: always()
+      # Step to set up Chrome and chromedriver automatically
+      - name: Set up ChromeDriver
+        uses: browser-actions/setup-chrome@v2
         with:
-          gh_pages: gh-pages
-          allure_history: allure-history
-          allure_results: build/allure-results
+          chrome-version: 'latest'  # Ensure this matches the version you want
 
-      - name: Publish test report
-        uses: peaceiris/actions-gh-pages@v3
-        if: always()
+      # Run Maven to execute the tests
+      - name: Run Maven tests
+        run: mvn clean test
+
+      # Generate and serve Allure report
+      - name: Generate Allure report
+        run: mvn allure:serve
+
+      - name: Upload Allure Report as artifact
+        uses: actions/upload-artifact@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_branch: gh-pages
-          publish_dir: allure-history
+          name: allure-report
+          path: target/site/allure-maven-plugin
 
 
 
