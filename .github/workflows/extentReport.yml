@@ -1,0 +1,48 @@
+name: Selenium Tests with Extent Reports
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v2
+        with:
+          java-version: '17'
+
+      - name: Cache Maven dependencies
+        uses: actions/cache@v2
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
+      - name: Install dependencies
+        run: mvn install -DskipTests
+
+      - name: Run Selenium Tests with Maven
+        run: mvn test
+
+      - name: Upload Extent Report to GitHub Pages
+        if: success()
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          folder: ./extentReports  # Ensure this folder contains the generated report
+
+      - name: Upload report as artifact (optional)
+        uses: actions/upload-artifact@v3
+        with:
+          name: extent-report
+          path: extentReport.html
