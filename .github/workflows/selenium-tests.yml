@@ -1,46 +1,79 @@
 name: allure-junit5-maven
 
-on: [ push ]
+on: 
+  push:
+    branches:
+      - master  # Trigger on push to 'master' branch
+  pull_request:
+    branches:
+      - master  # Trigger on PR to 'master' branch
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest  # Use the Ubuntu runner
+
     steps:
-      - uses: actions/checkout@v2
+    - name: Checkout code
+      uses: actions/checkout@v2
 
-      - name: Set up JDK 17
-        uses: actions/setup-java@v2
-        with:
-          java-version: '17'
-          distribution: 'adopt'
+    - name: Set up JDK 17
+      uses: actions/setup-java@v2
+      with:
+        java-version: '17'  # Set up JDK 17
+        distribution: 'adoptopenjdk'
 
-      - name: Run Test
-        if: always()
-        run: mvn package
-        continue-on-error: true
+    - name: Install Google Chrome and ChromeDriver
+      run: |
+        # Install Chrome and ChromeDriver for headless testing
+        sudo apt-get update
+        sudo apt-get install -y wget curl unzip
+        sudo apt-get install -y google-chrome-stable
+        sudo apt-get install -y chromium-chromedriver
+        sudo apt-get install -y xvfb  # Install Xvfb to simulate a display for headless testing
+        export DISPLAY=:99  # Set the display to use the virtual display
 
-      - name: Get Allure history
-        uses: actions/checkout@v2
-        if: always()
-        continue-on-error: true
-        with:
-          ref: gh-pages
-          path: gh-pages
+    - name: Start Xvfb (Headless Virtual Display)
+      run: |
+        # Start the virtual display using Xvfb
+        Xvfb :99 -screen 0 1280x1024x16 &
 
-      - name: Allure Report action from marketplace
-        uses: simple-elf/allure-report-action@master
-        if: always()
-        id: allure-report
-        with:
-          allure_results: target/allure-results
-          gh_pages: gh-pages
-          allure_report: allure-report
-          allure_history: allure-history
+    - name: Run Tests with Headless Chrome
+      run: |
+        # Set up Chrome options for headless mode in the tests
+        echo "Setting Chrome options for headless mode"
+        mvn clean test -Dselenium.browser=chrome -Dselenium.headless=true  # Run tests in headless mode using Chrome
 
-      - name: Deploy report to Github Pages
-        if: always()
-        uses: peaceiris/actions-gh-pages@v2
-        env:
-          PERSONAL_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          PUBLISH_BRANCH: gh-pages
-          PUBLISH_DIR: allure-history
+    - name: Generate Allure Report
+      run: |
+        # Run Allure report generation after tests
+        mvn allure:report
+        
+        # List contents of the 'target' folder for debugging
+        echo "Listing contents of target directory:"
+        ls -R target/
+
+    - name: Get Allure history
+      uses: actions/checkout@v2
+      if: always()
+      continue-on-error: true
+      with:
+        ref: gh-pages
+        path: gh-pages
+
+    - name: Allure Report action from marketplace
+      uses: simple-elf/allure-report-action@master
+      if: always()
+      id: allure-report
+      with:
+        allure_results: target/allure-results
+        gh_pages: gh-pages
+        allure_report: allure-report
+        allure_history: allure-history
+
+    - name: Deploy report to Github Pages
+      if: always()
+      uses: peaceiris/actions-gh-pages@v2
+      env:
+        PERSONAL_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        PUBLISH_BRANCH: gh-pages
+        PUBLISH_DIR: allure-history  # Directory to deploy (should contain the Allure report)
