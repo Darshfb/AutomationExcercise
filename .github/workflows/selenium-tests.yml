@@ -1,47 +1,67 @@
-name: try with GitHub Pages
+name: Run tests and publish report
 
-on:
+on: 
   push:
     branches:
-      - master
-  workflow_dispatch:
-
-permissions:
-  contents: read
-  pages: write
-  id-token: write
+      - master  # Trigger on push to the 'master' branch
+  pull_request:
+    branches:
+      - master  # Trigger on PR to 'master' branch
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
+  test:
+    runs-on: ubuntu-latest  # Use Ubuntu runner
+
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+    - name: Checkout code
+      uses: actions/checkout@v3
 
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-          cache: 'npm'
+    - name: Set up JDK 17
+      uses: actions/setup-java@v3
+      with:
+        distribution: zulu
+        java-version: 17
 
-      - name: Install dependencies
-        run: npm ci
+    - name: Install Google Chrome, ChromeDriver, and Xvfb
+      run: |
+        # Update apt and install necessary dependencies for headless testing
+        sudo apt-get update
+        sudo apt-get install -y wget curl unzip
+        sudo apt-get install -y google-chrome-stable  # Install stable Chrome
+        sudo apt-get install -y chromium-chromedriver  # Install ChromeDriver
+        sudo apt-get install -y xvfb  # Install Xvfb to simulate a display for headless tests
 
-      - name: Build
-        run: npm run build
+    - name: Start Xvfb (Headless Virtual Display)
+      run: |
+        # Start Xvfb in the background and set DISPLAY variable for headless mode
+        Xvfb :99 -screen 0 1280x1024x16 &
+        export DISPLAY=:99
 
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: ./dist
+    - name: Run Selenium Tests with Headless Chrome
+      run: |
+        # Run tests with Maven using Headless Chrome
+        mvn clean test -Dselenium.browser=chrome -Dselenium.headless=true  # Make sure tests are run headlessly with Chrome
 
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+    - name: Load test report history
+      uses: actions/checkout@v3
+      if: always()
+      continue-on-error: true
+      with:
+        ref: gh-pages
+        path: gh-pages
+
+    - name: Build test report
+      uses: simple-elf/allure-report-action@v1.7
+      if: always()
+      with:
+        gh_pages: gh-pages
+        allure_history: allure-history
+        allure_results: target/allure-results  # Use correct path for Allure results
+
+    - name: Publish test report
+      uses: peaceiris/actions-gh-pages@v3
+      if: always()
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_branch: gh-pages
+        publish_dir: allure-history  # Publish to gh-pages branch
