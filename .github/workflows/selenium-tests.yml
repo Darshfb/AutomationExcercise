@@ -1,51 +1,39 @@
-name: allure-testng-maven
+name: Allure Report CI
 
-on: [ push ]
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
 
 jobs:
   build:
-    runs-on: ubuntu-latest  # Use Ubuntu runner
+    runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
-
+    - uses: actions/checkout@v3
     - name: Set up JDK 11
-      uses: actions/setup-java@v2
+      uses: actions/setup-java@v3
       with:
-        java-version: '11'  # Set up JDK 17
-        distribution: 'adopt'
-
-    - name: Install Google Chrome, ChromeDriver, and Xvfb
-      run: |
-        # Install Google Chrome and ChromeDriver for headless testing
-        sudo apt-get update
-        sudo apt-get install -y wget curl unzip
-        sudo apt-get install -y google-chrome-stable
-        sudo apt-get install -y chromium-chromedriver
-        sudo apt-get install -y xvfb  # Install Xvfb to simulate a display for headless testing
-        export DISPLAY=:99  # Set the display to use the virtual display
-
-    - name: Start Xvfb (Headless Virtual Display)
-      run: |
-        # Start the virtual display using Xvfb
-        Xvfb :99 -screen 0 1280x1024x16 &
-
-    - name: Run Tests with Headless Chrome
-      run: |
-        # Set up Chrome options for headless mode in the tests
-        echo "Setting Chrome options for headless mode"
-        mvn clean test -Dselenium.browser=chrome -Dselenium.headless=true  # Run tests in headless mode using Chrome
-
-    - name: Generate Allure Report
-      run: |
-        # Run Allure report generation after tests
-        mvn allure:report
+        java-version: '11'
+        distribution: 'temurin'
+        cache: maven
         
-        # List contents of the 'target' folder for debugging
-        echo "Listing contents of target directory:"
-        ls -R target/
-
+    - uses: browser-actions/setup-chrome@latest
+    - run: chrome --version
+    
+    - name: Build with Maven
+      run: mvn -B package --file pom.xml
+      
+    - name: Build with Maven
+      run: mvn -B clean test
+      
+    - uses: actions/upload-artifact@master
+      with:
+        name: allure-results
+        path: allure-results
+        retention-days: 20
+        
     - name: Get Allure history
       uses: actions/checkout@v2
       if: always()
@@ -53,16 +41,17 @@ jobs:
       with:
         ref: gh-pages
         path: gh-pages
-
-    - name: Allure Report action from marketplace
+    
+    - name: Test marketplace action
       uses: simple-elf/allure-report-action@master
       if: always()
       id: allure-report
       with:
-        allure_results: target/allure-results
+        allure_results: allure-results
         gh_pages: gh-pages
         allure_report: allure-report
         allure_history: allure-history
+        keep_reports: 20
 
     - name: Deploy report to Github Pages
       if: always()
@@ -70,4 +59,4 @@ jobs:
       env:
         PERSONAL_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         PUBLISH_BRANCH: gh-pages
-        PUBLISH_DIR: allure-history  # Directory to deploy (should contain the Allure report)
+        PUBLISH_DIR: allure-history
