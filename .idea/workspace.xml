@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="871fcfba-f67c-4c43-b69f-f618921111b4" name="Changes" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="master" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;Darshfb&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/Darshfb/AutomationExcercise.git&quot;,
+    &quot;accountId&quot;: &quot;29786244-4963-4d28-962a-fad049b3196c&quot;
+  }
+}</component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="mavenHomeTypeForPersistence" value="WRAPPER" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 8
+}</component>
+  <component name="ProjectId" id="2nexzGuDinJXSAgfQC1gUg33epC" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "TestNG./Users/darshfc/IdeaProjects/gopon/automationexercise/testng.xml.executor": "Run",
+    "TestNG.C:/Users/Mostafa/Desktop/automation testing course/automationexercise/multibrowsers.xml.executor": "Run",
+    "TestNG.C:/Users/Mostafa/Desktop/automation testing course/automationexercise/sprint1.xml.executor": "Run",
+    "TestNG.C:/Users/Mostafa/Desktop/automation testing course/automationexercise/sprint2.xml.executor": "Run",
+    "TestNG.C:/Users/Mostafa/Desktop/automation testing course/automationexercise/sprint3.xml.executor": "Run",
+    "TestNG.TC09_Payment.getData.executor": "Run",
+    "com.codeium.enabled": "true",
+    "ignore.virus.scanning.warn.message": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/Mostafa/Desktop/ExtentReport_GitHubActions-ExtentReport_Name/ExtentReport_GitHubActions-ExtentReport_Name",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "project.propVCSSupport.DirectoryMappings",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Mostafa\Desktop\automation testing course\automationexercise\src\test\java" />
+      <recent name="C:\Users\Mostafa\Desktop\automation testing course\automationexercise" />
+      <recent name="C:\Users\Mostafa\Desktop\automation testing course\automationexercise\src\test\resources" />
+      <recent name="$PROJECT_DIR$/src/test" />
+      <recent name="$PROJECT_DIR$/src/main/java" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="testcases" />
+      <recent name="" />
+    </key>
+  </component>
+  <component name="RunAnythingCache">
+    <option name="myCommands">
+      <command value=" 12...]]'" />
+    </option>
+  </component>
+  <component name="RunManager" selected="TestNG./Users/darshfc/IdeaProjects/gopon/automationexercise/testng.xml">
+    <configuration name="C:/Users/Mostafa/Desktop/automation testing course/automationexercise/multibrowsers.xml" type="TestNG" temporary="true" nameIsGenerated="true">
+      <module name="automationexercise" />
+      <option name="SUITE_NAME" value="$PROJECT_DIR$/multibrowsers.xml" />
+      <option name="TEST_OBJECT" value="SUITE" />
+      <properties />
+      <listeners />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="C:/Users/Mostafa/Desktop/automation testing course/automationexercise/sprint1.xml" type="TestNG" temporary="true" nameIsGenerated="true">
+      <module name="automationexercise" />
+      <option name="SUITE_NAME" value="$PROJECT_DIR$/sprint1.xml" />
+      <option name="TEST_OBJECT" value="SUITE" />
+      <properties />
+      <listeners />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="C:/Users/Mostafa/Desktop/automation testing course/automationexercise/sprint3.xml" type="TestNG" temporary="true" nameIsGenerated="true">
+      <module name="automationexercise" />
+      <option name="SUITE_NAME" value="$PROJECT_DIR$/sprint3.xml" />
+      <option name="TEST_OBJECT" value="SUITE" />
+      <properties />
+      <listeners />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="TC09_Payment.getData" type="TestNG" temporary="true" nameIsGenerated="true">
+      <module name="automationexercise" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="testcases.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="testcases" />
+      <option name="MAIN_CLASS_NAME" value="testcases.TC09_Payment" />
+      <option name="METHOD_NAME" value="getData" />
+      <option name="TEST_OBJECT" value="METHOD" />
+      <properties />
+      <listeners />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="/Users/darshfc/IdeaProjects/gopon/automationexercise/testng.xml" type="TestNG" temporary="true" nameIsGenerated="true">
+      <module name="automationexercise" />
+      <option name="SUITE_NAME" value="$PROJECT_DIR$/testng.xml" />
+      <option name="TEST_OBJECT" value="SUITE" />
+      <properties />
+      <listeners />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="TestNG./Users/darshfc/IdeaProjects/gopon/automationexercise/testng.xml" />
+        <item itemvalue="TestNG.TC09_Payment.getData" />
+        <item itemvalue="TestNG.C:/Users/Mostafa/Desktop/automation testing course/automationexercise/sprint3.xml" />
+        <item itemvalue="TestNG.C:/Users/Mostafa/Desktop/automation testing course/automationexercise/sprint1.xml" />
+        <item itemvalue="TestNG.C:/Users/Mostafa/Desktop/automation testing course/automationexercise/multibrowsers.xml" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9823dce3aa75-28b599e66164-intellij.indexing.shared.core-IU-242.24807.4" />
+        <option value="bundled-js-predefined-d6986cc7102b-5c90d61e3bab-JavaScript-IU-242.24807.4" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="871fcfba-f67c-4c43-b69f-f618921111b4" name="Changes" comment="" />
+      <created>1729347605809</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1729347605809</updated>
+      <workItem from="1729347606795" duration="4662000" />
+      <workItem from="1729353492536" duration="616000" />
+      <workItem from="1729354582703" duration="5176000" />
+      <workItem from="1729600371942" duration="6963000" />
+      <workItem from="1730294157310" duration="41000" />
+      <workItem from="1732369940890" duration="2960000" />
+      <workItem from="1732372917030" duration="2273000" />
+      <workItem from="1732376062906" duration="323000" />
+      <workItem from="1732401906208" duration="312000" />
+      <workItem from="1732431720414" duration="596000" />
+      <workItem from="1732469523145" duration="22000" />
+      <workItem from="1732563936893" duration="5979000" />
+      <workItem from="1732646317789" duration="6558000" />
+      <workItem from="1732888333342" duration="19746000" />
+      <workItem from="1732922216255" duration="45000" />
+      <workItem from="1732963522013" duration="4098000" />
+      <workItem from="1733079435261" duration="25469000" />
+      <workItem from="1733176717909" duration="12947000" />
+      <workItem from="1733505131202" duration="228000" />
+      <workItem from="1733664352237" duration="1470000" />
+      <workItem from="1733836424629" duration="26000" />
+      <workItem from="1733951704499" duration="8031000" />
+      <workItem from="1734008415935" duration="710000" />
+      <workItem from="1734029660556" duration="9689000" />
+      <workItem from="1734100621988" duration="73338000" />
+      <workItem from="1734291874684" duration="7241000" />
+      <workItem from="1734299763548" duration="1919000" />
+      <workItem from="1734301853381" duration="467000" />
+      <workItem from="1734599474698" duration="93000" />
+      <workItem from="1734599590646" duration="7942000" />
+      <workItem from="1734779698947" duration="2489000" />
+      <workItem from="1734875063566" duration="1131000" />
+      <workItem from="1734947877929" duration="585000" />
+      <workItem from="1735046515635" duration="616000" />
+      <workItem from="1735137739073" duration="609000" />
+      <workItem from="1735389542263" duration="628000" />
+      <workItem from="1735405506058" duration="5963000" />
+      <workItem from="1735469309808" duration="6548000" />
+      <workItem from="1735484518616" duration="20445000" />
+      <workItem from="1735561953240" duration="1229000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="UnknownFeatures">
+    <option featureType="dependencySupport" implementationName="java:io.reactivex.rxjava3:rxjava" />
+    <option featureType="dependencySupport" implementationName="java:org.seleniumhq.selenium:selenium-java" />
+    <option featureType="dependencySupport" implementationName="java:io.qameta.allure:allure-java-commons" />
+    <option featureType="dependencySupport" implementationName="java:org.projectlombok:lombok" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="OPEN_GENERIC_TABS">
+      <map>
+        <entry key="f5507cf4-959d-4e19-84e1-b88573aee10d" value="TOOL_WINDOW" />
+      </map>
+    </option>
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+        <entry key="f5507cf4-959d-4e19-84e1-b88573aee10d">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>
