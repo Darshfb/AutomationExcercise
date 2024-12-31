@@ -31,3 +31,9 @@ jobs:
 
     - name: Run Tests
       run: mvn test  # Use `gradle test` if you are using Gradle
+
+    - name: Deploy pages
+      uses: JamesIves/github-pages-deploy-action@v4.5.0
+      with:
+        branch: gh-pages
+        folder: ./reports
