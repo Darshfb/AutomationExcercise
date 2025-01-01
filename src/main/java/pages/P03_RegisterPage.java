@@ -6,12 +6,12 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 
 import java.util.List;
 
-import static pages.PageBase.closeAds;
-import static pages.PageBase.scrollToElement;
+import static pages.PageBase.*;
 
 public class P03_RegisterPage {
     WebDriver driver;
@@ -40,7 +40,7 @@ public class P03_RegisterPage {
     private final By registerButton = By.xpath("(//button)[@data-qa='create-account']");
     private final By verifySignupPage = By.xpath("(//div)[@class='login-form']/h2");
     private final By accountCreated = By.xpath("(//h2)[@data-qa='account-created']");
-    private final By continueButton = By.xpath("(//a)[@data-qa='continue-button']");
+    private final By continueButton = By.xpath("(//div)[@class='pull-right']/a[@data-qa='continue-button']");
 
     @Getter
     private String genderName;
@@ -165,7 +165,14 @@ public class P03_RegisterPage {
     }
 
     public void continueToAccount() {
+        shortWait(driver).until(ExpectedConditions.elementToBeClickable(continueButton));
         new CustomDecorator(driver, continueButton).click();
+        try {
+
+            closeAds(driver);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }

@@ -70,7 +70,7 @@ public class TestBase {
 
     @AfterTest
     public void tearDown() {
-        quitBrowser(driver);
+//        quitBrowser(driver);
     }
 
     @AfterSuite

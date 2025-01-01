@@ -23,7 +23,7 @@ public class P01_HomePage {
     private final By authPage = By.xpath("(//a)[5]");
     private final By homePage = By.xpath("(//a)[@style='color: orange;']");
     private final By userName = By.xpath("(//div)[@class='col-sm-8']/div/ul/li[10]/a/b");
-    private final By deleteButton = By.xpath("//a[normalize-space()='Delete Account']");
+    private final By deleteButton = By.xpath("(//a)[text()=' Delete Account']");
     private final By deletedAccountMessage = By.xpath("//b[normalize-space()='Account Deleted!']");
     private final By goHomePage = By.xpath("//a[@class='btn btn-primary']");
     private final By logout = By.xpath("//a[normalize-space()='Logout']");
@@ -84,10 +84,19 @@ public class P01_HomePage {
     }
 
     public void deleteAccount() {
-        new CustomDecorator(driver, deleteButton).click();
+        shortWait(driver).until(ExpectedConditions.elementToBeClickable(deleteButton));
+        WebElement element = new CustomDecorator(driver, deleteButton);
+        element.click();
+        try {
+            element.click();
+        } catch (Exception e) {
+            System.out.println("error " + e.getMessage());
+        }
     }
 
-    public Boolean verifyDeleteAccount() {
+    public Boolean verifyDeleteAccount()
+    {
+        shortWait(driver).until(ExpectedConditions.visibilityOfElementLocated(deletedAccountMessage));
         return driver.findElement(deletedAccountMessage).getText().equals("ACCOUNT DELETED!");
     }
 

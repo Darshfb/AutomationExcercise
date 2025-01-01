@@ -27,7 +27,9 @@ public class TC01_Home extends TestBase {
     }
 
     @Test(priority = 4, dependsOnMethods = {"testcases.TC03_Register.registerWithValidData"})
-    public void checkUsernameIsVisibleAfterRegister() {
+    public void checkUsernameIsVisibleAfterRegister()
+    {
+        System.out.println("hellow world " + new P01_HomePage(driver).getUsername());
         Assert.assertEquals(new P01_HomePage(driver).getUsername(), name);
     }
 
@@ -43,10 +45,10 @@ public class TC01_Home extends TestBase {
 
     @Test(priority = 4)
     public void deleteAccountAndReturnBackToHomePage() {
-        new P01_HomePage(driver).deleteAccount();
         TC03_Register.password = null;
         email = null;
         name = null;
+        new P01_HomePage(driver).deleteAccount();
         Assert.assertTrue(new P01_HomePage(driver).verifyDeleteAccount());
         new P01_HomePage(driver).returnToHomePage();
     }

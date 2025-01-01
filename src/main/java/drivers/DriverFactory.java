@@ -77,6 +77,7 @@ public class DriverFactory
                 chromeOptions.addArguments("download.default_directory=" + System.getProperty("user.dir") + "\\sources");
                 chromeOptions.addArguments("--disable-extensions");// Disable safe browsing to allow all downloads
 //                chromeOptions.addArguments("--incognito");
+//                chromeOptions.addExtensions(new File("path/to/adblock/extension.crx"));
                 chromeOptions.addArguments("--disable-features=Autofill,AutofillAddressPrediction,PasswordManager");
                 chromeOptions.addArguments("--disable-save-password-bubble");  // Disable save password bubble
                 chromeOptions.addArguments("--disable-autofill-popup");  // Disable the autofill popup for address
@@ -88,6 +89,8 @@ public class DriverFactory
                 DesiredCapabilities capabilities = new DesiredCapabilities();
                 capabilities.setCapability(ChromeOptions.CAPABILITY, chromeOptions);
                 capabilities.setCapability(CapabilityType.ENABLE_DOWNLOADS, true);
+                File adBlockExtension = new File("C:\\adBlock\\CFHDOJBKJHNKLBPKDAIBDCCDDILIFDDB_4_10_0_1.crx");
+                chromeOptions.addExtensions(adBlockExtension);
 
                 chromeOptions.merge(capabilities);
 //                ChromeDriverService service = new ChromeDriverService.Builder()
