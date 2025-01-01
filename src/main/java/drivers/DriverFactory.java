@@ -89,8 +89,8 @@ public class DriverFactory
                 DesiredCapabilities capabilities = new DesiredCapabilities();
                 capabilities.setCapability(ChromeOptions.CAPABILITY, chromeOptions);
                 capabilities.setCapability(CapabilityType.ENABLE_DOWNLOADS, true);
-                File adBlockExtension = new File("C:\\adBlock\\CFHDOJBKJHNKLBPKDAIBDCCDDILIFDDB_4_10_0_1.crx");
-                chromeOptions.addExtensions(adBlockExtension);
+//                File adBlockExtension = new File("C:\\adBlock\\CFHDOJBKJHNKLBPKDAIBDCCDDILIFDDB_4_10_0_1.crx");
+//                chromeOptions.addExtensions(adBlockExtension);
 
                 chromeOptions.merge(capabilities);
 //                ChromeDriverService service = new ChromeDriverService.Builder()
